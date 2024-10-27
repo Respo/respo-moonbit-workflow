@@ -29,7 +29,7 @@ fn App::view(
   // @dom_ffi.log("Store to render: " + store.to_json().stringify(indent=2))
   let states = store.get_states()
   @respo_node.div(
-    attrs=@respo_node.respo_attrs(class_name=@respo.ui_global),
+    class_name=@respo.ui_global,
     style=@respo_node.RespoStyle::new(padding=Px(12)),
     [comp_counter(states.pick("counter"), store.counted)],
   )
