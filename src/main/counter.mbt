@@ -54,35 +54,35 @@ fn comp_counter(
     }
     dispatch.run!(ActionOp::StatesChange(c))
   }
-  @respo_node.div(
+  div(
     [
-      @respo_node.div(
+      div(
         [
-          @respo_node.button(
+          button(
             inner_text="demo inc",
-            class_name=@respo.ui_button,
-            style=@respo_node.RespoStyle::new(margin=Px(4)),
+            class_name=ui_button,
+            style=respo_style(margin=Px(4)),
             event={}..set(Click, on_inc),
           ),
-          @respo_node.button(
+          button(
             inner_text="demo dec",
-            class_name=@respo.ui_button,
-            style=@respo_node.RespoStyle::new(margin=Px(4)),
+            class_name=ui_button,
+            style=respo_style(margin=Px(4)),
             event={}..set(Click, on_dec),
           ),
-          @respo_node.button(
+          button(
             inner_text="demo inc twice",
-            class_name=@respo.ui_button,
-            style=@respo_node.RespoStyle::new(margin=Px(4)),
+            class_name=ui_button,
+            style=respo_style(margin=Px(4)),
             event={}..set(Click, on_inc_twice),
           ),
         ],
       ),
-      @respo_node.div(
+      div(
         [
-          @respo_node.span(
+          span(
             inner_text="value is: " + counted.to_string(),
-            style=@respo_node.RespoStyle::new(
+            style=respo_style(
               color=Hsluv(270, 100, 40),
               font_family="Menlo",
               font_size=counted.reinterpret_as_uint() + 10,
@@ -91,14 +91,11 @@ fn comp_counter(
           ),
         ],
       ),
-      @respo_node.div(
+      div(
         [
-          @respo_node.span(inner_text="local state: \{counted}", []),
+          span(inner_text="local state: \{counted}", []),
           @respo_node.br(),
-          @respo_node.span(
-            inner_text="global state: " + global_counted.to_string(),
-            [],
-          ),
+          span(inner_text="global state: " + global_counted.to_string(), []),
         ],
       ),
     ],

@@ -8,9 +8,9 @@ fn view(
   }
   // @dom_ffi.log("Store to render: " + store.to_json().stringify(indent=2))
   let states = store.get_states()
-  @respo_node.div(
+  div(
     class_name=@respo.ui_global,
-    style=@respo_node.RespoStyle::new(padding=Px(12)),
+    style=respo_style(padding=Px(12)),
     [comp_counter(states.pick("counter"), store.counted)],
   )
 }
