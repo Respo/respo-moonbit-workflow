@@ -1,8 +1,8 @@
 {
-  "name": "tiye/respo-workflow",
+  "name": "respo/app",
   "version": "0.1.0",
   "deps": {
-    "tiye/respo": "0.0.17",
+    "tiye/respo": "0.0.19",
     "tiye/dom-ffi": "0.0.6"
   },
   "readme": "README.md",

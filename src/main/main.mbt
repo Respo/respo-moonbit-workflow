@@ -1,5 +1,7 @@
+///|
 let app_store_key : String = "mbt-workflow"
 
+///|
 fn view(
   store : Store
 ) -> @respo_node.RespoNode[ActionOp]!@respo_node.RespoCommonError {
@@ -15,6 +17,7 @@ fn view(
   )
 }
 
+///|
 fn main {
   let window = @dom_ffi.window()
   let mount_target = window
