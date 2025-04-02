@@ -6,7 +6,7 @@ struct Store {
 } derive(ToJson, @json.FromJson)
 
 ///|
-fn Store::default() -> Store {
+impl Default for Store with default() -> Store {
   { counted: 0, tasks: [], states: @respo.RespoStatesTree::default() }
 }
 
@@ -19,22 +19,16 @@ struct Task {
 } derive(Default, Eq, Hash, ToJson, @json.FromJson)
 
 ///|
-enum IndentOp {
-  Noop
-}
-
-///|
 enum ActionOp {
   Noop
   StatesChange(@respo.RespoUpdateState)
-  Intent(IndentOp)
   Increment
   Decrement
   IncTwice
 }
 
 ///|
-fn ActionOp::default() -> ActionOp {
+impl Default for ActionOp with default() -> ActionOp {
   Noop
 }
 
@@ -44,16 +38,17 @@ impl @respo_node.RespoAction for ActionOp with build_states_action(cursor, a) {
 }
 
 ///|
-fn ActionOp::to_string(self : ActionOp) -> String {
-  match self {
+impl Show for ActionOp with output(self, logger) -> Unit {
+  let s = match self {
     Noop => "Noop"
     StatesChange(states) =>
       "StatesChange(\{states.cursor}  \{states.data.to_json()})"
-    Intent(_intent) => "Intent(...)"
+    // Intent(_intent) => "Intent(...)"
     Increment => "Increment"
     Decrement => "Decrement"
     IncTwice => "IncTwice"
   }
+  logger.write_string(s)
 }
 
 ///|
@@ -72,6 +67,6 @@ fn update(self : Store, op : ActionOp) -> Unit {
 }
 
 ///|
-fn to_string(self : Store) -> String {
-  self.to_json().stringify(indent=2)
+impl Show for Store with output(self, logger) -> Unit {
+  logger.write_string(self.to_json().stringify(indent=2))
 }
