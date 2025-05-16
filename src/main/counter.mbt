@@ -20,31 +20,31 @@ fn comp_counter(
     e : RespoEvent,
     dispatch : DispatchFn[ActionOp]
   ) -> Unit!RespoCommonError {
-    @dom_ffi.warn_log("inc click: " + e.to_string())
+    @dom_ffi.warn_log("inc click: \{e}")
     if e is Click(original_event~, ..) {
       original_event.prevent_default()
     }
     dispatch.run!(Increment)
     let next_state = MainState::{ counted: state.counted + 1 }
-    dispatch.run!(StatesChange({ cursor, data: Some(next_state.to_json()) }))
+    dispatch.set_state!(cursor, next_state)
   }
   let on_dec = fn(
     e : RespoEvent,
     dispatch : DispatchFn[ActionOp]
   ) -> Unit!RespoCommonError {
-    @dom_ffi.warn_log("dec click: " + e.to_string())
+    @dom_ffi.warn_log("dec click: \{e}")
     dispatch.run!(Decrement)
     let next_state = MainState::{ counted: state.counted - 1 }
-    dispatch.run!(StatesChange({ cursor, data: Some(next_state.to_json()) }))
+    dispatch.set_state!(cursor, next_state)
   }
   let on_inc_twice = fn(
     e : RespoEvent,
     dispatch : DispatchFn[ActionOp]
   ) -> Unit!RespoCommonError {
-    @dom_ffi.warn_log("twice click: " + e.to_string())
+    @dom_ffi.warn_log("twice click: \{e}")
     dispatch.run!(IncTwice)
     let next_state = MainState::{ counted: state.counted + 2 }
-    dispatch.run!(StatesChange({ cursor, data: Some(next_state.to_json()) }))
+    dispatch.set_state!(cursor, next_state)
   }
   div([
     div([
