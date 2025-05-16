@@ -1,4 +1,9 @@
 ///|
+
+///|
+typealias @respo_node.(RespoEvent, RespoNode, DispatchFn, RespoCommonError)
+
+///|
 struct MainState {
   counted : Int
 } derive(Default, ToJson, @json.FromJson)
@@ -7,14 +12,14 @@ struct MainState {
 fn comp_counter(
   states : @respo.RespoStatesTree,
   global_counted : Int
-) -> @respo_node.RespoNode[ActionOp] {
+) -> RespoNode[ActionOp] {
   let cursor = states.path()
-  let state : MainState = states.cast_branch()
+  let state = (states.cast_branch() : MainState)
   let counted = state.counted
   let on_inc = fn(
-    e : @respo_node.RespoEvent,
-    dispatch : @respo_node.DispatchFn[ActionOp]
-  ) -> Unit!@respo_node.RespoCommonError {
+    e : RespoEvent,
+    dispatch : DispatchFn[ActionOp]
+  ) -> Unit!RespoCommonError {
     @dom_ffi.warn_log("inc click: " + e.to_string())
     if e is Click(original_event~, ..) {
       original_event.prevent_default()
@@ -24,18 +29,18 @@ fn comp_counter(
     dispatch.run!(StatesChange({ cursor, data: Some(next_state.to_json()) }))
   }
   let on_dec = fn(
-    e : @respo_node.RespoEvent,
-    dispatch : @respo_node.DispatchFn[ActionOp]
-  ) -> Unit!@respo_node.RespoCommonError {
+    e : RespoEvent,
+    dispatch : DispatchFn[ActionOp]
+  ) -> Unit!RespoCommonError {
     @dom_ffi.warn_log("dec click: " + e.to_string())
     dispatch.run!(Decrement)
     let next_state = MainState::{ counted: state.counted - 1 }
     dispatch.run!(StatesChange({ cursor, data: Some(next_state.to_json()) }))
   }
   let on_inc_twice = fn(
-    e : @respo_node.RespoEvent,
-    dispatch : @respo_node.DispatchFn[ActionOp]
-  ) -> Unit!@respo_node.RespoCommonError {
+    e : RespoEvent,
+    dispatch : DispatchFn[ActionOp]
+  ) -> Unit!RespoCommonError {
     @dom_ffi.warn_log("twice click: " + e.to_string())
     dispatch.run!(IncTwice)
     let next_state = MainState::{ counted: state.counted + 2 }
@@ -46,25 +51,25 @@ fn comp_counter(
       button(
         inner_text="demo inc",
         class_name=ui_button,
-        style=respo_style(margin=Px(4)),
+        style=respo_style(margin=4 |> Px),
         event={}..set(Click, on_inc),
       ),
       button(
         inner_text="demo dec",
         class_name=ui_button,
-        style=respo_style(margin=Px(4)),
+        style=respo_style(margin=4 |> Px),
         event={}..set(Click, on_dec),
       ),
       button(
         inner_text="demo inc twice",
         class_name=ui_button,
-        style=respo_style(margin=Px(4)),
+        style=respo_style(margin=4 |> Px),
         event={}..set(Click, on_inc_twice),
       ),
     ]),
     div([
       span(
-        inner_text="value is: " + counted.to_string(),
+        inner_text="value is: \{counted}",
         style=respo_style(
           color=Hsluv(270, 100, 40),
           font_family="Menlo",
@@ -76,7 +81,7 @@ fn comp_counter(
     div([
       span(inner_text="local state: \{counted}", []),
       @respo_node.br(),
-      span(inner_text="global state: " + global_counted.to_string(), []),
+      span(inner_text="global state: \{global_counted}", []),
     ]),
   ])
 }
