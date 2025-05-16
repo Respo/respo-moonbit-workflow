@@ -5,7 +5,7 @@ fnalias @respo.(ui_global, ui_button)
 fnalias @respo_node.(
   div,
   span,
-  text,
+  text_node,
   button,
   respo_attrs,
   respo_style,

@@ -2,7 +2,7 @@
 struct Store {
   mut counted : Int
   tasks : Array[Task]
-  states : @respo_node.RespoStatesTree
+  states : @respo.RespoStatesTree
 } derive(ToJson, @json.FromJson)
 
 ///|
