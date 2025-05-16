@@ -1,4 +1,18 @@
 ///|
+fnalias @respo.(ui_global, ui_button)
+
+///|
+fnalias @respo_node.(
+  div,
+  span,
+  text,
+  button,
+  respo_attrs,
+  respo_style,
+  declare_static_style
+)
+
+///|
 let app_store_key : String = "mbt-workflow"
 
 ///|
@@ -10,11 +24,9 @@ fn view(
   }
   // @dom_ffi.log("Store to render: " + store.to_json().stringify(indent=2))
   let states = store.get_states()
-  div(
-    class_name=@respo.ui_global,
-    style=respo_style(padding=Px(12)),
-    [comp_counter(states.pick("counter"), store.counted)],
-  )
+  div(class_name=ui_global, style=respo_style(padding=Px(12)), [
+    comp_counter(states.pick("counter"), store.counted),
+  ])
 }
 
 ///|
@@ -31,13 +43,10 @@ fn main {
   }
   app.backup_model_beforeunload()
   // @dom_ffi.log("store: " + app.store.val.to_json().stringify(indent=2))
-  app.render_loop(
-    fn() { view!(app.store.val) },
-    fn(op) {
-      @dom_ffi.log("Action: " + op.to_string())
-      app.store.val.update(op)
-    },
-  )
+  app.render_loop(fn() { view!(app.store.val) }, fn(op) {
+    @dom_ffi.log("Action: " + op.to_string())
+    app.store.val.update(op)
+  })
   let dev_mode = @dom_ffi.new_url_search_params(window.location().search()).get(
     "mode",
   )

@@ -1,4 +1,7 @@
 ///|
+fnalias @respo_node.div
+
+///|
 struct MainState {
   counted : Int
 } derive(Default, ToJson, @json.FromJson)
