@@ -1,7 +1,8 @@
 ///|
+typealias @respo_node.(RespoEvent, RespoNode, DispatchFn, RespoCommonError)
 
 ///|
-typealias @respo_node.(RespoEvent, RespoNode, DispatchFn, RespoCommonError)
+fnalias @respo_node.text_node
 
 ///|
 struct MainState {
@@ -79,9 +80,9 @@ fn comp_counter(
       ),
     ]),
     div([
-      span(inner_text="local state: \{counted}", []),
+      "local state: \{counted}" |> text_node,
       @respo_node.br(),
-      span(inner_text="global state: \{global_counted}", []),
+      "global state: \{global_counted}" |> text_node,
     ]),
   ])
 }
