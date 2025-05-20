@@ -3,20 +3,11 @@
   "import": [
     {
       "path": "tiye/respo/lib",
-      "alias": "respo",
-      "value": ["ui_global", "ui_button"]
+      "alias": "respo"
     },
     {
       "path": "tiye/respo/lib/node",
-      "alias": "respo_node",
-      "value": [
-        "div",
-        "button",
-        "span",
-        "respo_attrs",
-        "respo_style",
-        "declare_static_style"
-      ]
+      "alias": "respo_node"
     },
     { "path": "tiye/dom-ffi/lib", "alias": "dom_ffi" }
   ]
