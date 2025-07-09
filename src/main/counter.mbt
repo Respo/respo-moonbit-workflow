@@ -51,19 +51,19 @@ fn comp_counter(
     div([
       button(
         inner_text="demo inc",
-        class_name=ui_button,
+        class_name=@respo.ui_button,
         style=respo_style(margin=4 |> Px),
         on_click=on_inc,
       ),
       button(
         inner_text="demo dec",
-        class_name=ui_button,
+        class_name=@respo.ui_button,
         style=respo_style(margin=4 |> Px),
         on_click=on_dec,
       ),
       button(
         inner_text="demo inc twice",
-        class_name=ui_button,
+        class_name=@respo.ui_button,
         style=respo_style(margin=4 |> Px),
         on_click=on_inc_twice,
       ),

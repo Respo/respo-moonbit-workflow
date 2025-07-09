@@ -1,7 +1,4 @@
 ///|
-fnalias @respo.(ui_global, ui_button)
-
-///|
 fnalias @respo_node.(div, span, button, respo_style)
 
 ///|
@@ -16,7 +13,7 @@ fn view(
   }
   // @dom_ffi.log("Store to render: " + store.to_json().stringify(indent=2))
   let states = store.get_states()
-  div(class_name=ui_global, style=respo_style(padding=Px(12)), [
+  div(class_name=@respo.ui_global, style=respo_style(padding=Px(12)), [
     comp_counter(states.pick("counter"), store.counted),
   ])
 }
