@@ -10,7 +10,7 @@ let app_store_key : String = "mbt-workflow"
 ///|
 fn view(
   store : Store
-) -> @respo_node.RespoNode[ActionOp]!@respo_node.RespoCommonError {
+) -> @respo_node.RespoNode[ActionOp] raise @respo_node.RespoCommonError {
   if false {
     raise @respo_node.RespoCommonError("TODO")
   }
@@ -35,12 +35,12 @@ fn main {
   }
   app.backup_model_beforeunload()
   // @dom_ffi.log("store: " + app.store.val.to_json().stringify(indent=2))
-  app.render_loop(fn() { view!(app.store.val) }, fn(op) {
-    @dom_ffi.log("Action: " + op.to_string())
+  app.render_loop(fn() { view(app.store.val) }, fn(op) {
+    @dom_ffi.log("Action: \{op}")
     app.store.val.update(op)
   })
   let dev_mode = @dom_ffi.new_url_search_params(window.location().search()).get(
     "mode",
   )
-  @dom_ffi.log("dev mode: " + dev_mode.to_string())
+  @dom_ffi.log("dev mode: \{dev_mode}")
 }

@@ -20,32 +20,32 @@ fn comp_counter(
   let on_inc = fn(
     e : RespoEvent,
     dispatch : DispatchFn[ActionOp]
-  ) -> Unit!RespoCommonError {
+  ) -> Unit raise RespoCommonError {
     @dom_ffi.warn_log("inc click: \{e}")
     if e is Click(original_event~, ..) {
       original_event.prevent_default()
     }
-    dispatch.run!(Increment)
+    dispatch.run(Increment)
     let next_state = MainState::{ counted: state.counted + 1 }
-    dispatch.set_state!(cursor, next_state)
+    dispatch.set_state(cursor, next_state)
   }
   let on_dec = fn(
     e : RespoEvent,
     dispatch : DispatchFn[ActionOp]
-  ) -> Unit!RespoCommonError {
+  ) -> Unit raise RespoCommonError {
     @dom_ffi.warn_log("dec click: \{e}")
-    dispatch.run!(Decrement)
+    dispatch.run(Decrement)
     let next_state = MainState::{ counted: state.counted - 1 }
-    dispatch.set_state!(cursor, next_state)
+    dispatch.set_state(cursor, next_state)
   }
   let on_inc_twice = fn(
     e : RespoEvent,
     dispatch : DispatchFn[ActionOp]
-  ) -> Unit!RespoCommonError {
+  ) -> Unit raise RespoCommonError {
     @dom_ffi.warn_log("twice click: \{e}")
-    dispatch.run!(IncTwice)
+    dispatch.run(IncTwice)
     let next_state = MainState::{ counted: state.counted + 2 }
-    dispatch.set_state!(cursor, next_state)
+    dispatch.set_state(cursor, next_state)
   }
   div([
     div([
@@ -53,19 +53,19 @@ fn comp_counter(
         inner_text="demo inc",
         class_name=ui_button,
         style=respo_style(margin=4 |> Px),
-        event={}..set(Click, on_inc),
+        on_click=on_inc,
       ),
       button(
         inner_text="demo dec",
         class_name=ui_button,
         style=respo_style(margin=4 |> Px),
-        event={}..set(Click, on_dec),
+        on_click=on_dec,
       ),
       button(
         inner_text="demo inc twice",
         class_name=ui_button,
         style=respo_style(margin=4 |> Px),
-        event={}..set(Click, on_inc_twice),
+        on_click=on_inc_twice,
       ),
     ]),
     div([
