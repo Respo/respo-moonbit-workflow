@@ -2,13 +2,15 @@
   "name": "respo/app",
   "version": "0.1.0",
   "deps": {
-    "tiye/respo": "0.0.35",
-    "tiye/dom-ffi": "0.0.9"
+    "tiye/respo": "0.1.0",
+    "tiye/dom-ffi": "0.2.0",
+    "tiye/respo_css": "0.1.2"
   },
   "readme": "README.md",
   "repository": "",
   "license": "Apache-2.0",
   "keywords": [],
   "description": "",
-  "source": "src"
+  "source": "src",
+  "preferred-target": "js"
 }
