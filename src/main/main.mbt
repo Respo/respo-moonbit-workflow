@@ -1,8 +1,8 @@
 ///|
-fnalias @respo_node.(div, span, button)
+using @respo_node {div, span, button}
 
 ///|
-fnalias @css.respo_style
+using @css {respo_style}
 
 ///|
 let app_store_key : String = "mbt-workflow"

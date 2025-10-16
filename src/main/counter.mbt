@@ -1,8 +1,11 @@
 ///|
-typealias @respo_node.(RespoEvent, RespoNode, DispatchFn, RespoCommonError)
-
-///|
-fnalias @respo_node.text_node
+using @respo_node {
+  text_node,
+  type RespoEvent,
+  type RespoNode,
+  type DispatchFn,
+  type RespoCommonError
+}
 
 ///|
 struct MainState {

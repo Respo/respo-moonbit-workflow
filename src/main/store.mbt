@@ -28,7 +28,7 @@ enum ActionOp {
 }
 
 ///|
-impl Default for ActionOp with default() -> ActionOp {
+pub impl Default for ActionOp with default() -> ActionOp {
   Noop
 }
 
