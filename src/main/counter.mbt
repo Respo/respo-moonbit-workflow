@@ -1,8 +1,11 @@
 ///|
-typealias @respo_node.(RespoEvent, RespoNode, DispatchFn, RespoCommonError)
-
-///|
-fnalias @respo_node.text_node
+using @respo_node {
+  text_node,
+  type RespoEvent,
+  type RespoNode,
+  type DispatchFn,
+  type RespoCommonError
+}
 
 ///|
 struct MainState {
@@ -12,14 +15,14 @@ struct MainState {
 ///|
 fn comp_counter(
   states : @respo.RespoStatesTree,
-  global_counted : Int
+  global_counted : Int,
 ) -> RespoNode[ActionOp] {
   let cursor = states.path()
   let state = (states.cast_branch() : MainState)
   let counted = state.counted
   let on_inc = fn(
     e : RespoEvent,
-    dispatch : DispatchFn[ActionOp]
+    dispatch : DispatchFn[ActionOp],
   ) -> Unit raise RespoCommonError {
     @dom_ffi.warn_log("inc click: \{e}")
     if e is Click(original_event~, ..) {
@@ -31,7 +34,7 @@ fn comp_counter(
   }
   let on_dec = fn(
     e : RespoEvent,
-    dispatch : DispatchFn[ActionOp]
+    dispatch : DispatchFn[ActionOp],
   ) -> Unit raise RespoCommonError {
     @dom_ffi.warn_log("dec click: \{e}")
     dispatch.run(Decrement)
@@ -40,7 +43,7 @@ fn comp_counter(
   }
   let on_inc_twice = fn(
     e : RespoEvent,
-    dispatch : DispatchFn[ActionOp]
+    dispatch : DispatchFn[ActionOp],
   ) -> Unit raise RespoCommonError {
     @dom_ffi.warn_log("twice click: \{e}")
     dispatch.run(IncTwice)

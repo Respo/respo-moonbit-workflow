@@ -1,12 +1,15 @@
 ///|
-fnalias @respo_node.(div, span, button, respo_style)
+using @respo_node {div, span, button}
+
+///|
+using @css {respo_style}
 
 ///|
 let app_store_key : String = "mbt-workflow"
 
 ///|
 fn view(
-  store : Store
+  store : Store,
 ) -> @respo_node.RespoNode[ActionOp] raise @respo_node.RespoCommonError {
   if false {
     raise @respo_node.RespoCommonError("TODO")
@@ -21,23 +24,24 @@ fn view(
 ///|
 fn main {
   let window = @dom_ffi.window()
-  let mount_target = window
-    .document()
-    .query_selector(".app")
-    .reinterpret_as_node()
-  let app : @respo.RespoApp[Store] = {
-    store: Ref::new(@respo.try_load_storage(app_store_key)),
-    mount_target,
-    storage_key: app_store_key,
+  if window.document().query_selector(".app") is Some(mount_target) {
+    let mount_target = mount_target.reinterpret_as_node()
+    let app : @respo.RespoApp[Store] = {
+      store: Ref::new(@respo.try_load_storage(app_store_key)),
+      mount_target,
+      storage_key: app_store_key,
+    }
+    app.backup_model_beforeunload()
+    // @dom_ffi.log("store: " + app.store.val.to_json().stringify(indent=2))
+    app.render_loop(fn() { view(app.store.val) }, fn(op) {
+      @dom_ffi.log("Action: \{op}")
+      app.store.val.update(op)
+    })
+    let dev_mode = @dom_ffi.new_url_search_params(window.location().search()).get(
+      "mode",
+    )
+    @dom_ffi.log("dev mode: \{dev_mode}")
+  } else {
+    @dom_ffi.log("No mount target found")
   }
-  app.backup_model_beforeunload()
-  // @dom_ffi.log("store: " + app.store.val.to_json().stringify(indent=2))
-  app.render_loop(fn() { view(app.store.val) }, fn(op) {
-    @dom_ffi.log("Action: \{op}")
-    app.store.val.update(op)
-  })
-  let dev_mode = @dom_ffi.new_url_search_params(window.location().search()).get(
-    "mode",
-  )
-  @dom_ffi.log("dev mode: \{dev_mode}")
 }
