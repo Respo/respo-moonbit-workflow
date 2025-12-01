@@ -2,9 +2,9 @@
   "name": "respo/app",
   "version": "0.1.0",
   "deps": {
-    "tiye/respo": "0.1.0",
-    "tiye/dom-ffi": "0.2.0",
-    "tiye/respo_css": "0.1.2"
+    "tiye/respo": "0.1.2",
+    "tiye/dom-ffi": "0.2.1",
+    "tiye/respo_css": "0.1.3"
   },
   "readme": "README.md",
   "repository": "",

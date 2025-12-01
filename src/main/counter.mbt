@@ -4,7 +4,7 @@ using @respo_node {
   type RespoEvent,
   type RespoNode,
   type DispatchFn,
-  type RespoCommonError
+  type RespoCommonError,
 }
 
 ///|
