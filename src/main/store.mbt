@@ -1,13 +1,12 @@
 ///|
 struct Store {
-  mut counted : Int
-  tasks : Array[Task]
+  counted : Int
   states : @respo.RespoStatesTree
-} derive(ToJson, @json.FromJson)
+} derive(ToJson, @json.FromJson, Eq)
 
 ///|
 impl Default for Store with default() -> Store {
-  { counted: 0, tasks: [], states: @respo.RespoStatesTree::default() }
+  { counted: 0, states: @respo.RespoStatesTree::default() }
 }
 
 ///|
@@ -66,11 +65,11 @@ fn Store::get_states(self : Store) -> @respo.RespoStatesTree {
 
 ///|
 /// TODO mutation might break memoization in future
-fn Store::update(self : Store, op : ActionOp) -> Unit {
+fn Store::update(self : Store, op : ActionOp) -> Store {
   match op {
-    Increment => self.counted += 1
-    StatesChange(states) => self.states.set_in_mut(states)
-    Decrement => self.counted -= 1
-    _ => ()
+    Increment => { ..self, counted: self.counted + 1 }
+    StatesChange(states) => { ..self, states: self.states.set_in(states) }
+    Decrement => { ..self, counted: self.counted - 1 }
+    _ => self
   }
 }
