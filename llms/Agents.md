@@ -9,8 +9,10 @@ Respo 是一个虚拟 DOM 框架，采用类似 React 的函数式组件设计�
 核心特点：
 
 - **函数式组件**：组件是返回 `RespoNode[ActionOp]` 的函数
-- **不可变状态管理**：全局 Store + 局部 States Tree
+- **不可变数据设计**：Store 和 State 必须是不可变的，使用 record update 语法 `{ ..old, field: value }` 创建新实例
+- **全局 Store + 局部 States Tree**：状态存储在树结构中，使用 cursor 进行定位
 - **声明式 UI**：使用 DSL 风格的元素构建函数
+- **引用相等优化**：由于数据不可变，未变化的引用可以跳过重绘
 
 ## 依赖导入
 
@@ -70,7 +72,7 @@ struct MyState {
 
 ///|
 fn comp_counter(states : RespoStatesTree) -> RespoNode[ActionOp] {
-  // 获取局部状态和 cursor
+  // 获取局部状态和 cursor（第三个值是可选的更新后的 tree，通常忽略）
   let ((state : MyState), cursor) = states.local_pair()
 
   div([
@@ -91,6 +93,8 @@ fn comp_counter(states : RespoStatesTree) -> RespoNode[ActionOp] {
 
 - State 结构体必须 derive `Default`, `ToJson`, `FromJson`
 - 使用 `dispatch.set_state(cursor, new_state)` 更新状态
+- `local_pair()` 返回二元组：`(state, cursor)`
+- 更新状态时使用 record update 语法：`{ ..state, field: new_value }`
 
 ### 子状态传递
 
@@ -322,16 +326,20 @@ impl @node.RespoEffect for MyEffect with before_unmount(_self, el) -> Unit {
 
 ### 定义 Store
 
+Store 是不可变的，使用 record update 语法 `{..self, field: value}` 创建新的 Store。集合类型使用 `@immut/array.T` 等不可变集合：
+
 ```moonbit
 ///|
+/// Store is immutable - all updates return new Store instances
 struct Store {
-  mut count : Int
+  count : Int
+  items : @immut/array.T[Item]  // Use immutable collections
   states : @respo.RespoStatesTree
-} derive(ToJson, FromJson)
+}
 
 ///|
 impl Default for Store with default() -> Store {
-  { count: 0, states: @respo.RespoStatesTree::default() }
+  { count: 0, items: @immut/array.new(), states: @respo.RespoStatesTree::default() }
 }
 
 ///|
@@ -368,17 +376,35 @@ impl @respo_node.RespoAction for ActionOp with build_states_action(cursor, a, j)
 
 ### 更新 Store
 
+Store 的 `update` 方法返回新的 Store 实例，不修改原有实例：
+
 ```moonbit
 ///|
-fn Store::update(self : Store, op : ActionOp) -> Unit {
+/// Immutable update: returns a new Store with the action applied
+fn Store::update(self : Store, op : ActionOp) -> Store {
   match op {
-    Increment => self.count += 1
-    Decrement => self.count -= 1
-    StatesChange(change) => self.states.set_in_mut(change)
-    Noop => ()
+    Increment => { ..self, count: self.count + 1 }
+    Decrement => { ..self, count: self.count - 1 }
+    StatesChange(change) => { ..self, states: self.states.set_in(change) }
+    Noop => self
   }
 }
 ```
+
+在 main 函数中，Store 通过 `Ref[Store]` 包装来支持可变引用：
+
+```moonbit
+app.render_loop(fn() { view(app.store.val) }, fn(op) {
+  // 使用不可变更新，将新 Store 赋值给 Ref
+  app.store.val = app.store.val.update(op)
+})
+```
+
+**为什么要用不可变数据**：
+
+- 通过 `physical_equal` 快速检测变化，跳过不必要的重绘
+- 可预测的状态管理
+- 更容易实现时间旅行调试
 
 ## 记忆化 (Memoization)
 
