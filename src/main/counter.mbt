@@ -29,17 +29,15 @@ fn comp_counter(
       original_event.prevent_default()
     }
     dispatch.run(Increment)
-    let next_state = MainState::{ counted: state.counted + 1 }
-    dispatch.set_state(cursor, next_state)
+    dispatch.set_state(cursor, { counted: state.counted + 1 })
   }
   let on_dec = fn(
-    e : RespoEvent,
+    e,
     dispatch : DispatchFn[ActionOp],
   ) -> Unit raise RespoCommonError {
     @dom_ffi.warn_log("dec click: \{e}")
     dispatch.run(Decrement)
-    let next_state = MainState::{ counted: state.counted - 1 }
-    dispatch.set_state(cursor, next_state)
+    dispatch.set_state(cursor, { counted: state.counted - 1 })
   }
   let on_inc_twice = fn(
     e : RespoEvent,
@@ -47,8 +45,7 @@ fn comp_counter(
   ) -> Unit raise RespoCommonError {
     @dom_ffi.warn_log("twice click: \{e}")
     dispatch.run(IncTwice)
-    let next_state = MainState::{ counted: state.counted + 2 }
-    dispatch.set_state(cursor, next_state)
+    dispatch.set_state(cursor, { counted: state.counted + 2 })
   }
   div([
     div([

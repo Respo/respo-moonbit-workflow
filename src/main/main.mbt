@@ -12,12 +12,11 @@ fn view(
   store : Store,
 ) -> @respo_node.RespoNode[ActionOp] raise @respo_node.RespoCommonError {
   if false {
-    raise @respo_node.RespoCommonError("TODO")
+    raise @respo_node.RespoCommonError("guarded")
   }
   // @dom_ffi.log("Store to render: " + store.to_json().stringify(indent=2))
-  let states = store.get_states()
   div(class_name=@respo.ui_global, style=respo_style(padding=Px(12)), [
-    comp_counter(states.pick("counter"), store.counted),
+    comp_counter(store.states.pick("counter"), store.counted),
   ])
 }
 
