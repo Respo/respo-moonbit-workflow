@@ -2,7 +2,7 @@
   "name": "respo/app",
   "version": "0.1.0",
   "deps": {
-    "tiye/respo": "0.2.3",
+    "tiye/respo": "0.3.0",
     "tiye/dom-ffi": "0.2.3",
     "tiye/respo_css": "0.1.4"
   },

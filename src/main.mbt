@@ -8,9 +8,12 @@ using @css {respo_style}
 let app_store_key : String = "mbt-workflow"
 
 ///|
+enum GlobalEvent {}
+
+///|
 fn view(
   store : Store,
-) -> @respo_node.RespoNode[ActionOp] raise @respo_node.RespoCommonError {
+) -> @respo_node.RespoNode[ActionOp, GlobalEvent] raise @respo_node.RespoCommonError {
   if false {
     raise @respo_node.RespoCommonError("guarded")
   }
