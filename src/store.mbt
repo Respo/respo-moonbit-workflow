@@ -33,8 +33,11 @@ impl @respo_node.RespoAction for ActionOp with build_states_action(cursor, a, j)
 ///|
 impl Show for ActionOp with output(self, logger) -> Unit {
   let s = match self {
-    StatesChange(state) =>
-      "StatesChange(\{state.cursor} \{state.backup.to_json()})"
+    StatesChange(state) => {
+      let cursor = @debug.to_string(state.cursor)
+      let backup = state.backup.to_json().stringify()
+      "StatesChange(\{cursor} \{backup})"
+    }
     // Intent(_intent) => "Intent(...)"
     Increment => "Increment"
     Decrement => "Decrement"

@@ -2,6 +2,14 @@
   "is-main": true,
   "import": [
     {
+      "path": "moonbitlang/core/json",
+      "alias": "json"
+    },
+    {
+      "path": "moonbitlang/core/debug",
+      "alias": "debug"
+    },
+    {
       "path": "tiye/respo",
       "alias": "respo"
     },

@@ -1,4 +1,7 @@
 target/
 .mooncakes/
+dist/
 
 node_modules
+
+_build

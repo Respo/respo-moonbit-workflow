@@ -29,14 +29,14 @@ fn main {
   if window.document().query_selector(".app") is Some(mount_target) {
     let mount_target = mount_target.reinterpret_as_node()
     let app : @respo.RespoApp[Store] = {
-      store: Ref::new(@respo.try_load_storage(app_store_key)),
+      store: Ref(@respo.try_load_storage(app_store_key)),
       mount_target,
       storage_key: app_store_key,
     }
     app.backup_model_beforeunload()
     // @dom_ffi.log("store: " + app.store.val.to_json().stringify(indent=2))
-    app.render_loop(fn() { view(app.store.val) }, fn(op) {
-      if not(op is StatesChange(_)) {
+    app.render_loop(() => view(app.store.val), (op) => {
+      if !(op is StatesChange(_)) {
         @dom_ffi.log("Action: \{op}")
       }
       app.store.val = app.store.val.update(op)
